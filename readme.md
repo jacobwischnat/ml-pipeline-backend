@@ -2,6 +2,7 @@ ML Pipeline Server
 
 - Data Sources
     - Tags
+    - Cleaning
 - Data Set Transforms
     - Crop
     - Color
