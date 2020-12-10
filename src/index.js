@@ -3,6 +3,7 @@ const colors = require('colors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {Sequelize} = require('sequelize');
+const cookieParser = require('cookie-parser');
 
 const config = require(require('../.sequelizerc').config);
 
@@ -28,6 +29,7 @@ const initialise = async ({log}) => {
         dataSource,
     };
 
+    app.use(cookieParser());
     app.use(bodyParser.json());
     app.use((request, response, next) => {
         log(request.method.bgBrightMagenta.black, request.originalUrl);
@@ -42,6 +44,7 @@ const initialise = async ({log}) => {
     app.use('/api', middleware.authenticate(dependencies));
 
     app.use('/api/user', routers.user(dependencies));
+    app.use('/api/file', routers.file(dependencies));
 
     app.use('/api', middleware.response(dependencies));
     app.use('/api', middleware.error(dependencies));

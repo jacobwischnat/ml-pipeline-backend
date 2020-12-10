@@ -1,11 +1,7 @@
 const {Sequelize} = require('sequelize');
 
-const file = require('./file');
-const account = require('./account');
-const userAccount = require('./userAccount');
-
-const table = 'user';
-const name = 'User';
+const table = 'file';
+const name = 'File';
 
 const schema = {
     id: {
@@ -17,17 +13,21 @@ const schema = {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    email: {
+    path: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
     },
-    password: {
+    type: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
     },
-    icon: {
+    size: {
         type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: true
+        allowNull: false
+    },
+    owner: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false
     },
     createdAt: {
         field: 'created_at',
@@ -58,16 +58,5 @@ module.exports = {
     name,
     schema,
     options,
-    getModel: sequelize => {
-        const model = sequelize.define(name, schema, options);
-
-        const File = file.getModel(sequelize);
-        const Account = account.getModel(sequelize);
-        const UserAccount = userAccount.getModel(sequelize);
-
-        model.hasOne(File, {as: 'avatar', targetKey: 'fileId', foreignKey: 'id'});
-        model.belongsToMany(Account, {through: UserAccount, as: 'accounts'});
-
-        return model;
-    },
+    getModel: sequelize => sequelize.define(name, schema, options),
 };
