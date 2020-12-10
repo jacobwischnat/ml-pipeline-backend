@@ -1,5 +1,7 @@
 const {Sequelize} = require('sequelize');
 
+const fileModel = require('../models/file');
+
 const table = 'account';
 const name = 'Account';
 
@@ -8,6 +10,10 @@ const schema = {
         type: Sequelize.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true
+    },
+    icon: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: true
     },
     name: {
         type: Sequelize.STRING,
@@ -42,5 +48,12 @@ module.exports = {
     name,
     schema,
     options,
-    getModel: sequelize => sequelize.define(name, schema, options),
+    getModel: sequelize => {
+        const model = sequelize.define(name, schema, options);
+
+        const File = fileModel.getModel(sequelize);
+        model.hasOne(File, {as: 'avatar', sourceKey: 'icon', foreignKey: 'id'});
+
+        return model;
+    },
 };

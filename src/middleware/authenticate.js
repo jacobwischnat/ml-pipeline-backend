@@ -22,6 +22,7 @@ module.exports = dependencies => async (request, response, next) => {
         if (!jwt) throw boom.unauthorized('JWT Required');
 
         const result = await jwtVerify(jwt, process.env.JWTSECRET);
+        console.log({result});
 
         request.locals.user = result;
 

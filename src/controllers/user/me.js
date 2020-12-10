@@ -16,9 +16,14 @@ module.exports = ({dataSource}) => {
                 where: {id: userId},
                 include: [
                     {
-                        where: {id: accountId},
                         model: Account,
-                        as: 'accounts'
+                        as: 'accounts',
+                        include: [
+                            {
+                                model: File,
+                                as: 'avatar'
+                            }
+                        ]
                     },
                     {
                         model: File,
@@ -27,13 +32,16 @@ module.exports = ({dataSource}) => {
                 ]
             });
 
-            console.log(user);
-
             if (!user) throw boom.notFound('User not found');
 
+            const account = user.accounts.find(({id}) => id === accountId);
+
             response.locals.response = {
+                user,
                 userId,
+                account,
                 accountId,
+                accounts: user.accounts,
                 avatar: user.avatar && user.avatar.id
             };
             next();

@@ -1,5 +1,5 @@
+require('colors');
 const path = require('path');
-const colors = require('colors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {Sequelize} = require('sequelize');
@@ -40,11 +40,12 @@ const initialise = async ({log}) => {
         next();
     });
 
-    app.use('/api/auth', routers.authenticate(dependencies));
     app.use('/api', middleware.authenticate(dependencies));
 
     app.use('/api/user', routers.user(dependencies));
     app.use('/api/file', routers.file(dependencies));
+    app.use('/api/auth', routers.authenticate(dependencies));
+    app.use('/api/account', routers.account(dependencies));
 
     app.use('/api', middleware.response(dependencies));
     app.use('/api', middleware.error(dependencies));

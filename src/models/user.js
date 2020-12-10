@@ -29,6 +29,11 @@ const schema = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: true
     },
+    active: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+    },
     createdAt: {
         field: 'created_at',
         type: Sequelize.DATE,
@@ -65,8 +70,11 @@ module.exports = {
         const Account = account.getModel(sequelize);
         const UserAccount = userAccount.getModel(sequelize);
 
-        model.hasOne(File, {as: 'avatar', targetKey: 'fileId', foreignKey: 'id'});
-        model.belongsToMany(Account, {through: UserAccount, as: 'accounts'});
+        model.hasOne(File, {as: 'avatar', sourceKey: 'icon', foreignKey: 'id'});
+        model.belongsToMany(Account, {
+            through: UserAccount,
+            as: 'accounts'
+        });
 
         return model;
     },
