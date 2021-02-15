@@ -10,3 +10,7 @@ module.exports.DISABLE_AUTH_MIDDLEWARE = [
     '/api/user/invite/accept'
 ];
 module.exports.BASE_DIR = path.resolve(__dirname, '../');
+module.exports.REQUIRED_ENV_VARS = ['JWTSECRET'];
+module.exports.DEFAULT_PATH = '/';
+module.exports.DEFAULT_PATH_GCPGCS = '/';
+module.exports.DEFAULT_PATH_FTP = './';
